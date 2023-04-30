@@ -32,6 +32,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->setRoles(['ROLE_USER']); //pour saisir le role automatiquement lors de l'enregistrement. A modifier si on souhaite ajouter le rôle d'admin
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
@@ -40,11 +41,12 @@ class RegistrationController extends AbstractController
                 $user,
                 $authenticator,
                 $request
-            );
+            );//l'utilisateur est authentifié automatiquement après l'enregistrement:
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
+    //puisque l'utilisateur est authentifié après qu'il s'est enregistré, la gestion de la redirection se fait dans AppAuthenticator.php 
 }
