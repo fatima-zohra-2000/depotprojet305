@@ -7,13 +7,29 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
+    
     // directory where compiled assets will be stored
-    .setOutputPath('public/build/')
+
+    // .setOutputPath('public/build/')
+    .setPublicPath(`${__dirname}/public/build`)
+
     // public path used by the web server to access the output path
-    .setPublicPath('/build')
+    // .setPublicPath('/build')
+    .setOutputPath(`${__dirname}/public/build/`)
+
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
 
+    .addRule({
+        test: /\.(png|jpg|jpeg|gif|ico)$/,
+        loader: 'file-loader',
+        options: {
+            name: '[path][name].[ext]',
+            outputPath: 'images/',
+            publicPath: '/build/images/',
+        },
+    })
+    
     /*
      * ENTRY CONFIG
      *
