@@ -7,5 +7,10 @@
 
     {{ include('produit/_form.html.twig') }}
 
+    {% if form_errors(form) %}
+        <div class="alert alert-danger">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
     <a href="{{ path('app_produit_index') }}">back to list</a>
 {% endblock %}

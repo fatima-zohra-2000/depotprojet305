@@ -21,7 +21,8 @@
             </tr>
             <tr>
                 <th>Image</th>
-                <td>{{ produit.image }}</td>
+                <td><img src="{{ vich_uploader_asset(produit, 'imageFile') }}" ></td>
+                
             </tr>
             <tr>
                 <th>Ordonnance</th>

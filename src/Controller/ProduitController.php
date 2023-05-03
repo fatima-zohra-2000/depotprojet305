@@ -28,6 +28,9 @@ class ProduitController extends AbstractController
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && !$form->isValid()) {
+            dump($form->getErrors(true, false));
+        }
         if ($form->isSubmitted() && $form->isValid()) {
             $produitRepository->save($produit, true);
 
