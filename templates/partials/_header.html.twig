@@ -16,7 +16,11 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_produit_index') }}">Fournisseurs
+					<a class="nav-link" href="{{ path('app_fournisseur_index') }}">Fournisseurs
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_categorie_index') }}">Catégories
 					</a>
 				</li>
 				{# {% if app.user %}
@@ -36,8 +40,7 @@
 						<li class="nav-item dropdown" style="margin-right: 5rem;">
 							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.name }}</a>
 							<div class="dropdown-menu">
-								{# <a class="dropdown-item" href="{{ path('user.edit', {id : app.user.id}) }}">Modifier mes informations</a>
-								<a class="dropdown-item" href="{{ path('user.edit.password', {id : app.user.id}) }}">Modifier mon mot de passe</a> #}
+								
 								<div class="dropdown-divider"></div>
 								{% if 'ROLE_ADMIN' in app.user.roles %}
 									<a class="dropdown-item" href="{{ path('admin') }}">Administration</a>

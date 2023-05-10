@@ -14,6 +14,10 @@ class ProduitType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('nom')
+            ->add('prix')
+            ->add('categorie_id')
+            ->add('ordonnance')
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Image du produit',
                 'label_attr' => [
@@ -21,10 +25,6 @@ class ProduitType extends AbstractType
                 ],
                 'required' => false
             ])
-            ->add('nom')
-            ->add('prix')
-            ->add('ordonnance')
-            ->add('categorie_id')
         ;
     }
 
