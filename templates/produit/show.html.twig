@@ -26,8 +26,20 @@
             </tr>
             <tr>
                 <th>Ordonnance</th>
-                <td>{{ produit.ordonnance ? 'Yes' : 'No' }}</td>
+                <td>{{ produit.ordonnance ? 'Oui' : 'Non' }}</td>
             </tr>
+            {% if stock is not null and stock.quantite is not null %}
+            <tr>
+                <th>Quantité</th>
+                <td>{{ stock.quantite }}</td>
+            </tr>
+            {% endif %}
+            {% if stock is not null and stock.fournisseurId.nom is not null %}
+            <tr>
+                <th>Fournisseur</th>
+                <td>{{ stock.fournisseurId.nom }}</td>
+            </tr>
+            {% endif %}
         </tbody>
     </table>
 

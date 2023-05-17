@@ -11,7 +11,8 @@
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Prix</th>
-                {# <th>Image</th> #}
+                <th>Quantité</th>
+                <th>Fournisseur</th>
                 <th>Ordonnance</th>
                 <th>actions</th>
             </tr>
@@ -22,20 +23,27 @@
                 <td>{{ produit.id }}</td>
                 <td>{{ produit.nom }}</td>
                 <td>{{ produit.prix }}</td>
-                {# <td>{{ produit.imageFile }}</td> #}
-                <td>{{ produit.ordonnance ? 'Yes' : 'No' }}</td>
+                {% if produit.stock is not null %}
+                <td>{{ produit.stock.quantite }}</td>
+                <td>{{ produit.stock.fournisseurId.nom }}</td>
+                {% else %}
+                <td>-</td>
+                <td>-</td>
+                {% endif %}
+                <td>{{ produit.ordonnance ? 'Oui' : 'Non' }}</td>
                 <td>
-                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}">show</a>
-                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">edit</a>
+                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}">Voir</a>
+                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">Modifier</a>
+                    <a href="{{ path('app_stock_edit', {'id': produit.id}) }}">Modifier le stock</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">Il n'existe aucun produit</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_produit_new') }}">Create new</a>
+    <a href="{{ path('app_produit_new') }}">Créer un nouveau produit</a>
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Form\ProduitType;
+use App\Form\StockType;
 use App\Repository\ProduitRepository;
 use App\Entity\Stock;
 use App\Repository\StockRepository;
@@ -56,25 +57,69 @@ class ProduitController extends AbstractController
     #[Route('/{id}', name: 'app_produit_show', methods: ['GET'])]
     public function show(Produit $produit): Response
     {
+        $stock = $produit->getStock();
         return $this->render('produit/show.html.twig', [
             'produit' => $produit,
+            'stock' => $stock,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_produit_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Produit $produit, ProduitRepository $produitRepository): Response
+    public function edit(Request $request, Produit $produit, ProduitRepository $produitRepository, StockRepository $stockRepository): Response
     {
+
+        // Récupération de l'objet Stock associé au produit
+        $stock = $stockRepository->findOneBy(['produit_id' => $produit->getId()]);
+
+        // Vérification que l'objet Stock existe bien avant de l'ajouter au formulaire
+        if (!$stock) {
+            throw $this->createNotFoundException('Stock not found for product '.$produit->getId());
+        }
+
         $form = $this->createForm(ProduitType::class, $produit);
+        $form->get('Stock')->setData($stock); // Pré-remplir les données de Stock dans le formulaire
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $produitRepository->save($produit, true);
+
+            $stock->setQuantite($form->get('Stock')->get('quantite')->getData());
+            $stock->setFournisseurId($form->get('Stock')->get('fournisseur_id')->getData());
+            $stockRepository->save($stock, true);
 
             return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('produit/edit.html.twig', [
             'produit' => $produit,
+            'stock' => $stock, // On passe l'objet Stock à la vue
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/editstock', name: 'app_stock_edit', methods: ['GET', 'POST'])]
+    public function editStock(Request $request, Produit $produit, StockRepository $stockRepository): Response
+    {
+        // Récupération de l'objet Stock associé au produit
+        $stock = $stockRepository->findOneBy(['produit_id' => $produit->getId()]);
+
+        // Vérification que l'objet Stock existe bien avant d'afficher le formulaire
+        if (!$stock) {
+            throw $this->createNotFoundException('Stock not found for product '.$produit->getId());
+        }
+
+        $form = $this->createForm(StockType::class, $stock);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $stockRepository->save($stock, true);
+
+            return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('stock/edit.html.twig', [
+            'produit' => $produit,
+            'stock' => $stock,
             'form' => $form,
         ]);
     }

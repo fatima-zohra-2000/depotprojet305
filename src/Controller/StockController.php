@@ -48,23 +48,23 @@ class StockController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_stock_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Stock $stock, StockRepository $stockRepository): Response
-    {
-        $form = $this->createForm(StockType::class, $stock);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $stockRepository->save($stock, true);
-
-            return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('stock/edit.html.twig', [
-            'stock' => $stock,
-            'form' => $form,
-        ]);
-    }
+//    #[Route('/{id}/edit', name: 'app_stock_edit', methods: ['GET', 'POST'])]
+//    public function edit(Request $request, Stock $stock, StockRepository $stockRepository): Response
+//    {
+//        $form = $this->createForm(StockType::class, $stock);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $stockRepository->save($stock, true);
+//
+//            return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->renderForm('stock/edit.html.twig', [
+//            'stock' => $stock,
+//            'form' => $form,
+//        ]);
+//    }
 
     #[Route('/{id}', name: 'app_stock_delete', methods: ['POST'])]
     public function delete(Request $request, Stock $stock, StockRepository $stockRepository): Response
