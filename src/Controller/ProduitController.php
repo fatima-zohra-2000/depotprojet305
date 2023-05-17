@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Produit;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
+use App\Entity\Stock;
+use App\Repository\StockRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +25,7 @@ class ProduitController extends AbstractController
     }
 
     #[Route('/new', name: 'app_produit_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ProduitRepository $produitRepository): Response
+    public function new(Request $request, ProduitRepository $produitRepository, StockRepository $stockRepository): Response
     {
         $produit = new Produit();
         $form = $this->createForm(ProduitType::class, $produit);
@@ -33,6 +36,13 @@ class ProduitController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()) {
             $produitRepository->save($produit, true);
+
+            $stock = new Stock();
+            $stock->setQuantite($form->get('Stock')->get('quantite')->getData()); //Avant c'était' : $form->get('quantite')->getData() c'était ça quia causé l'erreur Child "quantite" does not exist.
+            $stock->setProduitId($produit);
+            $stock->setFournisseurId($form->get('Stock')->get('fournisseur_id')->getData()); //même modification est faite ici
+
+            $stockRepository->save($stock, true);
 
             return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
         }

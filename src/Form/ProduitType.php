@@ -2,7 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Categorie;
 use App\Entity\Produit;
+use App\Entity\Stock;
+use App\Form\StockType;
+use App\Entity\Fournisseur;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +32,10 @@ class ProduitType extends AbstractType
                         'class' => 'form-label mt-4'
                     ],
             ])
-            ->add('categorie_id')
+            ->add('categorie_id', EntityType::class, [
+                'class' => Categorie::class,
+                'label' => 'Catégorie'
+            ])
             ->add('ordonnance', CheckboxType::class, [
                 'label' => 'Ordonnance',
                 'attr' => [
@@ -46,6 +54,13 @@ class ProduitType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'required' => false
+            ])
+
+//            ceci fait référence au formulaire Stock pour reprendre les champs qu'y existe. C'est aussi la propriété récupérer dans la vu : form.Stock.quantite
+            ->add('Stock', StockType::class, [
+                'required' => true,
+                'mapped' => false,
+                'property_path' => 'stock.quantite',
             ])
         ;
     }

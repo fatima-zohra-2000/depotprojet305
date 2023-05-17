@@ -1,16 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Produit{% endblock %}
+{#{% block title %}New Produit{% endblock %}#}
+
+{#{% block body %}#}
+{#    <h1>Create new Produit</h1>#}
+
+{#    {{ include('produit/_form.html.twig') }}#}
+
+{#    {% if form_errors(form) %}#}
+{#        <div class="alert alert-danger">#}
+{#            {{ form_errors(form) }}#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    <a href="{{ path('app_produit_index') }}">back to list</a>#}
+{#{% endblock %}#}
+
+{% block title %}Création d'un produit{% endblock %}
 
 {% block body %}
-    <h1>Create new Produit</h1>
+    <h1>Création d'un produit</h1>
 
-    {{ include('produit/_form.html.twig') }}
-
-    {% if form_errors(form) %}
-        <div class="alert alert-danger">
-            {{ form_errors(form) }}
-        </div>
-    {% endif %}
-    <a href="{{ path('app_produit_index') }}">back to list</a>
+    {{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.prix) }}
+    {{ form_row(form.categorie_id) }}
+    {{ form_row(form.ordonnance) }}
+    {{ form_row(form.imageFile) }}
+    {{ form_row(form.Stock.quantite) }}
+    {{ form_row(form.Stock.fournisseur_id) }}
+    {# include the rest of the fields here #}
+    <button type="submit" class="btn btn-primary">Créer</button>
+    {{ form_end(form) }}
 {% endblock %}
