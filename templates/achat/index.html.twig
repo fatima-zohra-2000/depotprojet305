@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Achat index{% endblock %}
+
+{% block body %}
+    <h1>Achat index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Num_achat</th>
+                <th>TVA</th>
+                <th>Mantant_TVA</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for achat in achats %}
+            <tr>
+                <td>{{ achat.id }}</td>
+                <td>{{ achat.numAchat }}</td>
+                <td>{{ achat.TVA }}</td>
+                <td>{{ achat.mantantTVA }}</td>
+                <td>{{ achat.total }}</td>
+                <td>{{ achat.date ? achat.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_achat_show', {'id': achat.id}) }}">show</a>
+                    <a href="{{ path('app_achat_edit', {'id': achat.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_achat_new') }}">Create new</a>
+{% endblock %}
