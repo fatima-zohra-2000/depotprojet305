@@ -45,17 +45,23 @@ class Produit
     #[ORM\OneToOne(mappedBy: 'produit_id', cascade: ['persist', 'remove'])]
     private ?Stock $stock = null;
 
-    #[ORM\ManyToMany(targetEntity: TailleCommande::class, mappedBy: 'produit_id')]
-    private Collection $tailleCommandes;
+    // #[ORM\ManyToMany(targetEntity: TailleCommande::class, mappedBy: 'produit_id')]
+    // private Collection $tailleCommandes;
 
-    #[ORM\ManyToMany(targetEntity: TailleAchat::class, mappedBy: 'produit_id')]
-    private Collection $tailleAchats;
+    // #[ORM\ManyToMany(targetEntity: TailleAchat::class, mappedBy: 'produit_id')]
+    // private Collection $tailleAchats;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: TailleCommande::class)]
+    private Collection $tailleCommandes;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: TailleAchat::class)]
+    private Collection $tailleAchats;
 
     public function __construct()
     {
@@ -171,60 +177,6 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection<int, TailleCommande>
-     */
-    public function getTailleCommandes(): Collection
-    {
-        return $this->tailleCommandes;
-    }
-
-    public function addTailleCommande(TailleCommande $tailleCommande): self
-    {
-        if (!$this->tailleCommandes->contains($tailleCommande)) {
-            $this->tailleCommandes->add($tailleCommande);
-            $tailleCommande->addProduitId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTailleCommande(TailleCommande $tailleCommande): self
-    {
-        if ($this->tailleCommandes->removeElement($tailleCommande)) {
-            $tailleCommande->removeProduitId($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, TailleAchat>
-     */
-    public function getTailleAchats(): Collection
-    {
-        return $this->tailleAchats;
-    }
-
-    public function addTailleAchat(TailleAchat $tailleAchat): self
-    {
-        if (!$this->tailleAchats->contains($tailleAchat)) {
-            $this->tailleAchats->add($tailleAchat);
-            $tailleAchat->addProduitId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTailleAchat(TailleAchat $tailleAchat): self
-    {
-        if ($this->tailleAchats->removeElement($tailleAchat)) {
-            $tailleAchat->removeProduitId($this);
-        }
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -245,6 +197,66 @@ class Produit
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TailleCommande>
+     */
+    public function getTailleCommandes(): Collection
+    {
+        return $this->tailleCommandes;
+    }
+
+    public function addTailleCommande(TailleCommande $tailleCommande): self
+    {
+        if (!$this->tailleCommandes->contains($tailleCommande)) {
+            $this->tailleCommandes->add($tailleCommande);
+            $tailleCommande->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTailleCommande(TailleCommande $tailleCommande): self
+    {
+        if ($this->tailleCommandes->removeElement($tailleCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($tailleCommande->getProduit() === $this) {
+                $tailleCommande->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TailleAchat>
+     */
+    public function getTailleAchats(): Collection
+    {
+        return $this->tailleAchats;
+    }
+
+    public function addTailleAchat(TailleAchat $tailleAchat): self
+    {
+        if (!$this->tailleAchats->contains($tailleAchat)) {
+            $this->tailleAchats->add($tailleAchat);
+            $tailleAchat->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTailleAchat(TailleAchat $tailleAchat): self
+    {
+        if ($this->tailleAchats->removeElement($tailleAchat)) {
+            // set the owning side to null (unless already changed)
+            if ($tailleAchat->getProduit() === $this) {
+                $tailleAchat->setProduit(null);
+            }
+        }
 
         return $this;
     }

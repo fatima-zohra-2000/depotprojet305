@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\TailleCommandeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TailleCommandeRepository::class)]
@@ -15,11 +13,12 @@ class TailleCommande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'tailleCommande', targetEntity: Commande::class)]
-    private Collection $commande_id;
+    #[ORM\ManyToOne(inversedBy: 'tailleCommandes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Commande $commande = null;
 
-    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'tailleCommandes')]
-    private Collection $produit_id;
+    #[ORM\ManyToOne(inversedBy: 'tailleCommandes')]
+    private ?Produit $produit = null;
 
     #[ORM\Column]
     private ?int $quantite = null;
@@ -27,67 +26,31 @@ class TailleCommande
     #[ORM\Column]
     private ?float $prix = null;
 
-    public function __construct()
-    {
-        $this->commande_id = new ArrayCollection();
-        $this->produit_id = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandeId(): Collection
+    public function getCommande(): ?Commande
     {
-        return $this->commande_id;
+        return $this->commande;
     }
 
-    public function addCommandeId(Commande $commandeId): self
+    public function setCommande(?Commande $commande): self
     {
-        if (!$this->commande_id->contains($commandeId)) {
-            $this->commande_id->add($commandeId);
-            $commandeId->setTailleCommande($this);
-        }
+        $this->commande = $commande;
 
         return $this;
     }
 
-    public function removeCommandeId(Commande $commandeId): self
+    public function getProduit(): ?Produit
     {
-        if ($this->commande_id->removeElement($commandeId)) {
-            // set the owning side to null (unless already changed)
-            if ($commandeId->getTailleCommande() === $this) {
-                $commandeId->setTailleCommande(null);
-            }
-        }
-
-        return $this;
+        return $this->produit;
     }
 
-    /**
-     * @return Collection<int, Produit>
-     */
-    public function getProduitId(): Collection
+    public function setProduit(?Produit $produit): self
     {
-        return $this->produit_id;
-    }
-
-    public function addProduitId(Produit $produitId): self
-    {
-        if (!$this->produit_id->contains($produitId)) {
-            $this->produit_id->add($produitId);
-        }
-
-        return $this;
-    }
-
-    public function removeProduitId(Produit $produitId): self
-    {
-        $this->produit_id->removeElement($produitId);
+        $this->produit = $produit;
 
         return $this;
     }

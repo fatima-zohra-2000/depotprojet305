@@ -30,8 +30,11 @@ class Fournisseur
     #[ORM\OneToMany(mappedBy: 'fournisseur_id', targetEntity: Stock::class, orphanRemoval: true)]
     private Collection $stocks;
 
-    #[ORM\OneToMany(mappedBy: 'fournisseur_id', targetEntity: Achat::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'fournisseur', targetEntity: Achat::class)]
     private Collection $achats;
+
+    // #[ORM\OneToMany(mappedBy: 'fournisseur_id', targetEntity: Achat::class, orphanRemoval: true)]
+    // private Collection $achats;
 
     public function __construct()
     {
@@ -134,7 +137,7 @@ class Fournisseur
     {
         if (!$this->achats->contains($achat)) {
             $this->achats->add($achat);
-            $achat->setFournisseurId($this);
+            $achat->setFournisseur($this);
         }
 
         return $this;
@@ -144,8 +147,8 @@ class Fournisseur
     {
         if ($this->achats->removeElement($achat)) {
             // set the owning side to null (unless already changed)
-            if ($achat->getFournisseurId() === $this) {
-                $achat->setFournisseurId(null);
+            if ($achat->getFournisseur() === $this) {
+                $achat->setFournisseur(null);
             }
         }
 

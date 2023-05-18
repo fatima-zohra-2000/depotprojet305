@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\TailleAchatRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TailleAchatRepository::class)]
@@ -15,11 +13,12 @@ class TailleAchat
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'tailleAchat', targetEntity: Achat::class)]
-    private Collection $achat_id;
+    #[ORM\ManyToOne(inversedBy: 'tailleAchats')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Achat $achat = null;
 
-    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'tailleAchats')]
-    private Collection $produit_id;
+    #[ORM\ManyToOne(inversedBy: 'tailleAchats')]
+    private ?Produit $produit = null;
 
     #[ORM\Column]
     private ?int $quantite = null;
@@ -27,67 +26,31 @@ class TailleAchat
     #[ORM\Column]
     private ?float $prix = null;
 
-    public function __construct()
-    {
-        $this->achat_id = new ArrayCollection();
-        $this->produit_id = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Achat>
-     */
-    public function getAchatId(): Collection
+    public function getAchat(): ?Achat
     {
-        return $this->achat_id;
+        return $this->achat;
     }
 
-    public function addAchatId(Achat $achatId): self
+    public function setAchat(?Achat $achat): self
     {
-        if (!$this->achat_id->contains($achatId)) {
-            $this->achat_id->add($achatId);
-            $achatId->setTailleAchat($this);
-        }
+        $this->achat = $achat;
 
         return $this;
     }
 
-    public function removeAchatId(Achat $achatId): self
+    public function getProduit(): ?Produit
     {
-        if ($this->achat_id->removeElement($achatId)) {
-            // set the owning side to null (unless already changed)
-            if ($achatId->getTailleAchat() === $this) {
-                $achatId->setTailleAchat(null);
-            }
-        }
-
-        return $this;
+        return $this->produit;
     }
 
-    /**
-     * @return Collection<int, Produit>
-     */
-    public function getProduitId(): Collection
+    public function setProduit(?Produit $produit): self
     {
-        return $this->produit_id;
-    }
-
-    public function addProduitId(Produit $produitId): self
-    {
-        if (!$this->produit_id->contains($produitId)) {
-            $this->produit_id->add($produitId);
-        }
-
-        return $this;
-    }
-
-    public function removeProduitId(Produit $produitId): self
-    {
-        $this->produit_id->removeElement($produitId);
+        $this->produit = $produit;
 
         return $this;
     }

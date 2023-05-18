@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AchatRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,21 +20,27 @@ class Achat
     private ?int $num_achat = null;
 
     #[ORM\ManyToOne(inversedBy: 'achats')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Fournisseur $fournisseur_id = null;
+    private ?Fournisseur $fournisseur = null;
 
     #[ORM\Column]
-    private ?int $TVA = null;
+    private ?float $TVA = null;
 
     #[ORM\Column]
-    private ?float $prix = null;
+    private ?float $mantant_TVA = null;
+
+    #[ORM\Column]
+    private ?float $total = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'achat_id')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TailleAchat $tailleAchat = null;
+    #[ORM\OneToMany(mappedBy: 'achat', targetEntity: TailleAchat::class)]
+    private Collection $tailleAchats;
+
+    public function __construct()
+    {
+        $this->tailleAchats = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -51,38 +59,50 @@ class Achat
         return $this;
     }
 
-    public function getFournisseurId(): ?Fournisseur
+    public function getFournisseur(): ?Fournisseur
     {
-        return $this->fournisseur_id;
+        return $this->fournisseur;
     }
 
-    public function setFournisseurId(?Fournisseur $fournisseur_id): self
+    public function setFournisseur(?Fournisseur $fournisseur): self
     {
-        $this->fournisseur_id = $fournisseur_id;
+        $this->fournisseur = $fournisseur;
 
         return $this;
     }
 
-    public function getTVA(): ?int
+    public function getTVA(): ?float
     {
         return $this->TVA;
     }
 
-    public function setTVA(int $TVA): self
+    public function setTVA(float $TVA): self
     {
         $this->TVA = $TVA;
 
         return $this;
     }
 
-    public function getPrix(): ?float
+    public function getMantantTVA(): ?float
     {
-        return $this->prix;
+        return $this->mantant_TVA;
     }
 
-    public function setPrix(float $prix): self
+    public function setMantantTVA(float $mantant_TVA): self
     {
-        $this->prix = $prix;
+        $this->mantant_TVA = $mantant_TVA;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): self
+    {
+        $this->total = $total;
 
         return $this;
     }
@@ -99,14 +119,32 @@ class Achat
         return $this;
     }
 
-    public function getTailleAchat(): ?TailleAchat
+    /**
+     * @return Collection<int, TailleAchat>
+     */
+    public function getTailleAchats(): Collection
     {
-        return $this->tailleAchat;
+        return $this->tailleAchats;
     }
 
-    public function setTailleAchat(?TailleAchat $tailleAchat): self
+    public function addTailleAchat(TailleAchat $tailleAchat): self
     {
-        $this->tailleAchat = $tailleAchat;
+        if (!$this->tailleAchats->contains($tailleAchat)) {
+            $this->tailleAchats->add($tailleAchat);
+            $tailleAchat->setAchat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTailleAchat(TailleAchat $tailleAchat): self
+    {
+        if ($this->tailleAchats->removeElement($tailleAchat)) {
+            // set the owning side to null (unless already changed)
+            if ($tailleAchat->getAchat() === $this) {
+                $tailleAchat->setAchat(null);
+            }
+        }
 
         return $this;
     }

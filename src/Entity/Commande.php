@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,16 +20,24 @@ class Commande
     private ?int $num_commande = null;
 
     #[ORM\Column]
-    private ?float $prix = null;
+    private ?float $total = null;
 
     #[ORM\Column]
     private ?float $TVA = null;
 
+    #[ORM\Column]
+    private ?float $mantant_TVA = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commande_id')]
-    private ?TailleCommande $tailleCommande = null;
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: TailleCommande::class)]
+    private Collection $tailleCommandes;
+
+    public function __construct()
+    {
+        $this->tailleCommandes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -46,14 +56,14 @@ class Commande
         return $this;
     }
 
-    public function getPrix(): ?float
+    public function getTotal(): ?float
     {
-        return $this->prix;
+        return $this->total;
     }
 
-    public function setPrix(float $prix): self
+    public function setTotal(float $total): self
     {
-        $this->prix = $prix;
+        $this->total = $total;
 
         return $this;
     }
@@ -70,6 +80,18 @@ class Commande
         return $this;
     }
 
+    public function getMantantTVA(): ?float
+    {
+        return $this->mantant_TVA;
+    }
+
+    public function setMantantTVA(float $mantant_TVA): self
+    {
+        $this->mantant_TVA = $mantant_TVA;
+
+        return $this;
+    }
+
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
@@ -82,14 +104,32 @@ class Commande
         return $this;
     }
 
-    public function getTailleCommande(): ?TailleCommande
+    /**
+     * @return Collection<int, TailleCommande>
+     */
+    public function getTailleCommandes(): Collection
     {
-        return $this->tailleCommande;
+        return $this->tailleCommandes;
     }
 
-    public function setTailleCommande(?TailleCommande $tailleCommande): self
+    public function addTailleCommande(TailleCommande $tailleCommande): self
     {
-        $this->tailleCommande = $tailleCommande;
+        if (!$this->tailleCommandes->contains($tailleCommande)) {
+            $this->tailleCommandes->add($tailleCommande);
+            $tailleCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTailleCommande(TailleCommande $tailleCommande): self
+    {
+        if ($this->tailleCommandes->removeElement($tailleCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($tailleCommande->getCommande() === $this) {
+                $tailleCommande->setCommande(null);
+            }
+        }
 
         return $this;
     }
