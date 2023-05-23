@@ -31,7 +31,7 @@ class Commande
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: TailleCommande::class)]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: TailleCommande::class, cascade:['persist'])]
     private Collection $tailleCommandes;
 
     public function __construct()

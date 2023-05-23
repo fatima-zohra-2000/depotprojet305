@@ -1,18 +1,86 @@
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %}New Commande{% endblock %}#}
+
+{#{% block body %}#}
+{#    <h1>Create new Commande</h1>#}
+
+{#    {{ include('commande/_form.html.twig') }}#}
+
+{#    <a href="{{ path('app_commande_index') }}">back to list</a>#}
+{#    <script>#}
+{#        // Attendre que le document soit prêt#}
+{#        $(document).ready(function() {#}
+{#            // Initialiser Select2 sur le champ de formulaire avec la classe "select2"#}
+{#            $('.select2').select2();#}
+{#        });#}
+{#    </script>#}
+{#{% endblock %}#}
+
+
 {% extends 'base.html.twig' %}
 
-{% block title %}New Commande{% endblock %}
-
 {% block body %}
-    <h1>Create new Commande</h1>
+    <h1>Nouvelle Commande</h1>
 
-    {{ include('commande/_form.html.twig') }}
+    {{ form_start(form) }}
+    <h2>Produits</h2>
+    <div id="tailleCommandes">
+        {{ form_errors(form.tailleCommandes) }}
+        {% for tailleCommandeForm in form.tailleCommandes %}
+            <div class="tailleCommandeForm">
+                {{ form_row(tailleCommandeForm.produit) }}
+                {{ form_row(tailleCommandeForm.quantite) }}
+            </div>
+        {% endfor %}
+    </div>
 
-    <a href="{{ path('app_commande_index') }}">back to list</a>
+    <button type="button" id="addProductBtn">Ajouter un produit</button>
+
+    <h2>TVA</h2>
+    {{ form_row(form.TVA) }}
+
+    <button type="submit">Créer</button>
+    {{ form_end(form) }}
+
     <script>
-        // Attendre que le document soit prêt
         $(document).ready(function() {
-            // Initialiser Select2 sur le champ de formulaire avec la classe "select2"
-            $('.select2').select2();
+            // Compteur pour générer des identifiants uniques pour chaque formulaire
+            var counter = {{ form.tailleCommandes|length }};
+
+            // Fonction pour cloner le formulaire de produit
+            function cloneProductForm() {
+                // Sélectionnez le formulaire de produit d'origine
+                var originalForm = $('.tailleCommandeForm').first();
+
+                // Clonez le formulaire avec un nouvel identifiant unique
+                var clonedForm = originalForm.clone();
+
+                // Modifiez les attributs de l'élément cloné pour les rendre uniques
+                clonedForm.find('input, select').each(function() {
+                    var name = $(this).attr('name');
+                    var newName = name.replace('[0]', '[' + counter + ']');
+                    $(this).attr('name', newName);
+                    $(this).val('');
+                });
+
+                // Ajoutez le formulaire cloné à la fin de la liste
+                clonedForm.appendTo('#tailleCommandes');
+
+                // Incrémentez le compteur pour l'identifiant suivant
+                counter++;
+            }
+
+            // Gérez le clic sur le bouton "Ajouter un produit"
+            $('#addProductBtn').click(function() {
+                cloneProductForm();
+            });
+            // Attendre que le document soit prêt#}
+            $(document).ready(function() {
+                // Initialiser Select2 sur le champ de formulaire avec la classe "select2"
+                $('.select2').select2();
+            });
         });
     </script>
 {% endblock %}
+

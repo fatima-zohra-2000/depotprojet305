@@ -48,11 +48,12 @@ class CommandeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tailleCommande->setPrix($tailleCommande->getProduit()->getPrix());
 
             $somme = 0;
             foreach ($commande->getTailleCommandes() as $tc) {
+                $tc->setPrix($tc->getProduit()->getPrix());
                 $somme += $tc->getPrix() * $tc->getQuantite();
+                $entityManager->persist($tc); // cette ligne pour persister chaque tailleCommande
             }
 
             $montantTva = $somme * $commande->getTVA() / 100;
@@ -62,7 +63,7 @@ class CommandeController extends AbstractController
             $commande->setMantantTVA($montantTva);
 
             $entityManager->persist($commande);
-            $entityManager->persist($tailleCommande);
+//            $entityManager->persist($tailleCommande);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
