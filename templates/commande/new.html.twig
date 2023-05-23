@@ -8,4 +8,11 @@
     {{ include('commande/_form.html.twig') }}
 
     <a href="{{ path('app_commande_index') }}">back to list</a>
+    <script>
+        // Attendre que le document soit prêt
+        $(document).ready(function() {
+            // Initialiser Select2 sur le champ de formulaire avec la classe "select2"
+            $('.select2').select2();
+        });
+    </script>
 {% endblock %}

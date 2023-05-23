@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Commande;
 use App\Form\CommandeType;
+use App\Entity\TailleCommande;
+use App\Entity\Produit;
 use App\Repository\CommandeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,14 +25,45 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CommandeRepository $commandeRepository): Response
+    public function new(Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
     {
+//        $commande = new Commande();
+//        $form = $this->createForm(CommandeType::class, $commande);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $commandeRepository->save($commande, true);
+//
+//            return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
+//        }
         $commande = new Commande();
+        $tailleCommande = new TailleCommande();
+        $commande->addTailleCommande($tailleCommande);
+
+        $lastCommande = $commandeRepository->findOneBy([], ['id' => 'desc']);
+        $lastNumCommande = $lastCommande ? $lastCommande->getNumCommande() : 0;
+        $commande->setNumCommande($lastNumCommande + 1);
+
         $form = $this->createForm(CommandeType::class, $commande);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $commandeRepository->save($commande, true);
+            $tailleCommande->setPrix($tailleCommande->getProduit()->getPrix());
+
+            $somme = 0;
+            foreach ($commande->getTailleCommandes() as $tc) {
+                $somme += $tc->getPrix() * $tc->getQuantite();
+            }
+
+            $montantTva = $somme * $commande->getTVA() / 100;
+            $total = $somme + $montantTva;
+
+            $commande->setTotal($total);
+            $commande->setMantantTVA($montantTva);
+
+            $entityManager->persist($commande);
+            $entityManager->persist($tailleCommande);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
         }

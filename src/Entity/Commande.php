@@ -37,6 +37,7 @@ class Commande
     public function __construct()
     {
         $this->tailleCommandes = new ArrayCollection();
+        $this->date = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
