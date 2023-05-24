@@ -40,6 +40,7 @@ class Achat
     public function __construct()
     {
         $this->tailleAchats = new ArrayCollection();
+        $this->date = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

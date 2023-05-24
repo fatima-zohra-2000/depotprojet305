@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Achat;
+use App\Entity\TailleAchat;
 use App\Form\AchatType;
 use App\Repository\AchatRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,17 +24,48 @@ class AchatController extends AbstractController
     }
 
     #[Route('/new', name: 'app_achat_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AchatRepository $achatRepository): Response
+    public function new(Request $request, AchatRepository $achatRepository, EntityManagerInterface $entityManager): Response
     {
-        $achat = new Achat();
-        $form = $this->createForm(AchatType::class, $achat);
-        $form->handleRequest($request);
+//        $achat = new Achat();
+//        $form = $this->createForm(AchatType::class, $achat);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $achatRepository->save($achat, true);
+//
+//            return $this->redirectToRoute('app_achat_index', [], Response::HTTP_SEE_OTHER);
+//        }
+            $achat = new Achat();
+            $tailleAchat = new TailleAchat();
+            $achat->addTailleAchat($tailleAchat);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $achatRepository->save($achat, true);
+            $lastAchat = $achatRepository->findOneBy([], ['id' => 'desc']);
+            $lastNumAchat = $lastAchat ? $lastAchat->getNumAchat() : 0;
+            $achat->setNumAchat($lastNumAchat + 1);
 
-            return $this->redirectToRoute('app_achat_index', [], Response::HTTP_SEE_OTHER);
-        }
+            $form = $this->createForm(AchatType::class, $achat);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $total = 0;
+                foreach ($achat->getTailleAchats() as $tailleAchat) {
+                    $tailleAchat->setPrix($tailleAchat->getProduit()->getPrix());
+                    $total += $tailleAchat->getPrix() * $tailleAchat->getQuantite();
+                    $entityManager->persist($tailleAchat);
+                }
+
+                $montantTva = $total * $achat->getTVA() / 100;
+                $totalTTC = $total + $montantTva;
+
+                $achat->setMantantTVA($montantTva);
+                $achat->setTotal($totalTTC);
+
+                $entityManager->persist($achat);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_achat_index', [], Response::HTTP_SEE_OTHER);
+            }
 
         return $this->renderForm('achat/new.html.twig', [
             'achat' => $achat,
