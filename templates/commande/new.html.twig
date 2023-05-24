@@ -25,17 +25,17 @@
 
     {{ form_start(form) }}
     <h2>Produits</h2>
-    <div id="tailleCommandes">
+    <div id="tailleCommandesContainer">
         {{ form_errors(form.tailleCommandes) }}
         {% for tailleCommandeForm in form.tailleCommandes %}
             <div class="tailleCommandeForm">
-                {{ form_row(tailleCommandeForm.produit) }}
-                {{ form_row(tailleCommandeForm.quantite) }}
+                {{ form_row(tailleCommandeForm.produit, {'label': 'Produit', 'attr': {'class': 'select2'}}) }}
+                {{ form_row(tailleCommandeForm.quantite, {'label': 'Quantité'}) }}
             </div>
         {% endfor %}
     </div>
 
-    <button type="button" id="addProductBtn">Ajouter un produit</button>
+    <button type="button" id="addProductBtn" data-prototype="{{ form_row(form.tailleCommandes.vars.prototype)|e('html_attr') }}">Ajouter un produit</button>
 
     <h2>TVA</h2>
     {{ form_row(form.TVA) }}
@@ -44,41 +44,30 @@
     {{ form_end(form) }}
 
     <script>
-        $(document).ready(function() {
-            // Compteur pour générer des identifiants uniques pour chaque formulaire
-            var counter = {{ form.tailleCommandes|length }};
+        document.addEventListener('DOMContentLoaded', function () {
+            var addProductButton = document.getElementById('addProductBtn');
+            var tailleCommandesContainer = document.getElementById('tailleCommandesContainer');
+            var index = tailleCommandesContainer.querySelectorAll('.tailleCommandeForm').length;
 
-            // Fonction pour cloner le formulaire de produit
-            function cloneProductForm() {
-                // Sélectionnez le formulaire de produit d'origine
-                var originalForm = $('.tailleCommandeForm').first();
+            addProductButton.addEventListener('click', function () {
+                var prototype = addProductButton.getAttribute('data-prototype');
+                var newForm = prototype.replace(/__name__/g, index);
+                var newFormContainer = document.createElement('div');
+                newFormContainer.classList.add('tailleCommandeForm');
+                newFormContainer.innerHTML = newForm;
+                tailleCommandesContainer.appendChild(newFormContainer);
+                index++;
 
-                // Clonez le formulaire avec un nouvel identifiant unique
-                var clonedForm = originalForm.clone();
-
-                // Modifiez les attributs de l'élément cloné pour les rendre uniques
-                clonedForm.find('input, select').each(function() {
-                    var name = $(this).attr('name');
-                    var newName = name.replace('[0]', '[' + counter + ']');
-                    $(this).attr('name', newName);
-                    $(this).val('');
-                });
-
-                // Ajoutez le formulaire cloné à la fin de la liste
-                clonedForm.appendTo('#tailleCommandes');
-
-                // Incrémentez le compteur pour l'identifiant suivant
-                counter++;
-            }
-
-            // Gérez le clic sur le bouton "Ajouter un produit"
-            $('#addProductBtn').click(function() {
-                cloneProductForm();
+                // Sélectionnez le champ de formulaire 'produit' dans le formulaire nouvellement ajouté
+                var newProduitField = newFormContainer.querySelector('.select2');
+                // Initialisez Select2 sur le champ de formulaire 'produit'
+                $(newProduitField).select2();
             });
-            // Attendre que le document soit prêt#}
-            $(document).ready(function() {
-                // Initialiser Select2 sur le champ de formulaire avec la classe "select2"
-                $('.select2').select2();
+
+            // Initialisez Select2 sur les champs de formulaire 'produit' existants
+            var existingProduitFields = document.querySelectorAll('.select2');
+            existingProduitFields.forEach(function (field) {
+                $(field).select2();
             });
         });
     </script>
