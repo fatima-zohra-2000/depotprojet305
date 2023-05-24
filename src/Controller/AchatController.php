@@ -26,15 +26,6 @@ class AchatController extends AbstractController
     #[Route('/new', name: 'app_achat_new', methods: ['GET', 'POST'])]
     public function new(Request $request, AchatRepository $achatRepository, EntityManagerInterface $entityManager): Response
     {
-//        $achat = new Achat();
-//        $form = $this->createForm(AchatType::class, $achat);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $achatRepository->save($achat, true);
-//
-//            return $this->redirectToRoute('app_achat_index', [], Response::HTTP_SEE_OTHER);
-//        }
             $achat = new Achat();
             $tailleAchat = new TailleAchat();
             $achat->addTailleAchat($tailleAchat);
@@ -100,10 +91,14 @@ class AchatController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_achat_delete', methods: ['POST'])]
-    public function delete(Request $request, Achat $achat, AchatRepository $achatRepository): Response
+    public function delete(Request $request, Achat $achat, AchatRepository $achatRepository, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$achat->getId(), $request->request->get('_token'))) {
-            $achatRepository->remove($achat, true);
+            foreach ($achat->getTailleAchats() as $tailleAchat) {
+                $entityManager->remove($tailleAchat);
+            }
+            $entityManager->remove($achat);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_achat_index', [], Response::HTTP_SEE_OTHER);

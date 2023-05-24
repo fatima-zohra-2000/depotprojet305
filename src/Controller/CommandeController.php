@@ -27,15 +27,6 @@ class CommandeController extends AbstractController
     #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
     {
-//        $commande = new Commande();
-//        $form = $this->createForm(CommandeType::class, $commande);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $commandeRepository->save($commande, true);
-//
-//            return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
-//        }
         $commande = new Commande();
         $tailleCommande = new TailleCommande();
         $commande->addTailleCommande($tailleCommande);
@@ -102,10 +93,14 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_commande_delete', methods: ['POST'])]
-    public function delete(Request $request, Commande $commande, CommandeRepository $commandeRepository): Response
+    public function delete(Request $request, Commande $commande, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$commande->getId(), $request->request->get('_token'))) {
-            $commandeRepository->remove($commande, true);
+            foreach ($commande->getTailleCommandes() as $tailleCommande) {
+                $entityManager->remove($tailleCommande);
+            }
+            $entityManager->remove($commande);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
