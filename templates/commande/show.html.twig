@@ -3,7 +3,7 @@
 {% block title %}Commande{% endblock %}
 
 {% block body %}
-    <h1>Commande</h1>
+    <h1>Informations sur la Commande</h1>
 
     <table class="table">
         <tbody>
@@ -17,20 +17,41 @@
             </tr>
             <tr>
                 <th>Total</th>
-                <td>{{ commande.total }}</td>
+                <td>{{ commande.total }} €</td>
             </tr>
             <tr>
                 <th>TVA</th>
-                <td>{{ commande.TVA }}</td>
+                <td>{{ commande.TVA }} %</td>
             </tr>
             <tr>
                 <th>Mantant_TVA</th>
-                <td>{{ commande.mantantTVA }}</td>
+                <td>{{ commande.mantantTVA }} €</td>
             </tr>
             <tr>
                 <th>Date</th>
                 <td>{{ commande.date ? commande.date|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+        </tbody>
+    </table>
+    <h2>Produits commandés :</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Prix unitaire</th>
+            <th>Quantité</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tailleCommande in commande.tailleCommandes %}
+            <tr>
+                <td>{{ tailleCommande.produit.nom }}</td>
+                <td>{{ tailleCommande.produit.prix }} €</td>
+                <td>{{ tailleCommande.quantite }}</td>
+                <td>{{ tailleCommande.produit.prix * tailleCommande.quantite }} €</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 

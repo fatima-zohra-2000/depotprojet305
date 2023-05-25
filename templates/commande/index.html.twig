@@ -10,11 +10,11 @@
             <tr>
                 <th>Id</th>
                 <th>Num_commande</th>
-                <th>Total</th>
-                <th>TVA</th>
-                <th>Mantant_TVA</th>
+                <th>Total €</th>
+                <th>TVA %</th>
+                <th>Mantant_TVA €</th>
                 <th>Date</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -22,10 +22,10 @@
             <tr>
                 <td>{{ commande.id }}</td>
                 <td>{{ commande.numCommande }}</td>
-                <td>{{ commande.total }}</td>
-                <td>{{ commande.TVA }}</td>
-                <td>{{ commande.mantantTVA }}</td>
-                <td>{{ commande.date ? commande.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commande.total }} €</td>
+                <td>{{ commande.TVA }} %</td>
+                <td>{{ commande.mantantTVA }} €</td>
+                <td>{{ commande.date ? commande.date|date('d-m-Y à H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_commande_show', {'id': commande.id}) }}">show</a>
                     <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a>

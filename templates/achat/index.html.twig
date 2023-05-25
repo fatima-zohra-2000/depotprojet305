@@ -10,11 +10,11 @@
             <tr>
                 <th>Id</th>
                 <th>Num_achat</th>
-                <th>TVA</th>
-                <th>Mantant_TVA</th>
-                <th>Total</th>
+                <th>TVA %</th>
+                <th>Mantant_TVA €</th>
+                <th>Total €</th>
                 <th>Date</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -22,13 +22,14 @@
             <tr>
                 <td>{{ achat.id }}</td>
                 <td>{{ achat.numAchat }}</td>
-                <td>{{ achat.TVA }}</td>
-                <td>{{ achat.mantantTVA }}</td>
-                <td>{{ achat.total }}</td>
-                <td>{{ achat.date ? achat.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ achat.TVA }} %</td>
+                <td>{{ achat.mantantTVA }} €</td>
+                <td>{{ achat.total }} €</td>
+                <td>{{ achat.date ? achat.date|date('d-m-Y à H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_achat_show', {'id': achat.id}) }}">show</a>
                     <a href="{{ path('app_achat_edit', {'id': achat.id}) }}">edit</a>
+                    <a href="{{ path('app_achat_rapport_download', {'id': achat.id}) }}">down</a>
                 </td>
             </tr>
         {% else %}

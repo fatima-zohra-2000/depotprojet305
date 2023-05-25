@@ -1,0 +1,30 @@
+{% block body %}
+    <div class="container">
+        <h1>Rapport d'achat</h1>
+        <p>Numéro d'achat : {{ achat.numachat }}</p>
+        <p>Fournisseur : {{ achat.fournisseur.nom }}</p>
+        <p>Date d'achat : {{ achat.date|date('d/m/Y à H:i') }}</p>
+
+        <h2>Produits achetés :</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Prix unitaire</th>
+                <th>Quantité</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tailleAchat in achat.tailleAchats %}
+                <tr>
+                    <td>{{ tailleAchat.produit.nom }}</td>
+                    <td>{{ tailleAchat.produit.prix }}</td>
+                    <td>{{ tailleAchat.quantite }}</td>
+                    <td>{{ tailleAchat.produit.prix * tailleAchat.quantite }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

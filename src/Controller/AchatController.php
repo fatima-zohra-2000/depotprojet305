@@ -7,9 +7,11 @@ use App\Entity\TailleAchat;
 use App\Form\AchatType;
 use App\Repository\AchatRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/achat')]
@@ -102,5 +104,38 @@ class AchatController extends AbstractController
         }
 
         return $this->redirectToRoute('app_achat_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/rapport', name: 'app_achat_rapport')]
+    public function rapportAchat(Achat $achat): Response
+    {
+        $html = $this->renderView('rapports/achat.html.twig', ['achat' => $achat]);
+
+        return new Response($html);
+    }
+
+    #[Route('/{id}/rapport/download', name: 'app_achat_rapport_download')]
+    public function rapportAchatDownload(Achat $achat): Response
+    {
+        $html = $this->renderView('rapports/achat.html.twig', ['achat' => $achat]);
+
+        $filename = 'rapport_achat_' . $achat->getId() . '.pdf';
+
+        // Conversion du contenu HTML en PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A5', 'portrait');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+
+        // Téléchargement du rapport PDF
+        $response = new Response($pdfContent);
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        ));
+
+        return $response;
     }
 }

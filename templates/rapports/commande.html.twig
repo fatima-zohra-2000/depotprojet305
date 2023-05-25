@@ -1,8 +1,8 @@
-<body>
+{% block body %}
 <div class="container">
     <h1>Rapport de commande</h1>
     <p>Numéro de commande : {{ commande.numcommande }}</p>
-    <p>Date de commande : {{ commande.date|date('d/m/Y') }}</p>
+    <p>Date de commande : {{ commande.date|date('d/m/Y à H:i') }}</p>
 
     <h2>Produits commandés :</h2>
     <table class="table">
@@ -26,5 +26,4 @@
         </tbody>
     </table>
 </div>
-</body>
-</html>
+{% endblock %}
