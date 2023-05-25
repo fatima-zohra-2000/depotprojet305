@@ -1,0 +1,30 @@
+<body>
+<div class="container">
+    <h1>Rapport de commande</h1>
+    <p>Numéro de commande : {{ commande.numcommande }}</p>
+    <p>Date de commande : {{ commande.date|date('d/m/Y') }}</p>
+
+    <h2>Produits commandés :</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Prix unitaire</th>
+            <th>Quantité</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tailleCommande in commande.tailleCommandes %}
+            <tr>
+                <td>{{ tailleCommande.produit.nom }}</td>
+                <td>{{ tailleCommande.produit.prix }}</td>
+                <td>{{ tailleCommande.quantite }}</td>
+                <td>{{ tailleCommande.produit.prix * tailleCommande.quantite }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
