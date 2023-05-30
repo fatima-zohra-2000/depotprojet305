@@ -34,6 +34,9 @@ class Commande
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: TailleCommande::class, cascade:['persist'])]
     private Collection $tailleCommandes;
 
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    private ?Client $client = null;
+
     public function __construct()
     {
         $this->tailleCommandes = new ArrayCollection();
@@ -131,6 +134,18 @@ class Commande
                 $tailleCommande->setCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }
