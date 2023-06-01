@@ -55,6 +55,17 @@ class CommandeController extends AbstractController
             $commande->setTotal($total);
             $commande->setMantantTVA($montantTva);
 
+            if ($form->has('newClient')) {
+                $newClient = $form->get('newClient')->getData();
+                if ($newClient) {
+                    $entityManager->persist($newClient);
+                    $commande->setClient($newClient);
+                } else {
+                    $client = $form->get('client')->getData();
+                    $commande->setClient($client);
+                }
+            }
+
             $entityManager->persist($commande);
 //            $entityManager->persist($tailleCommande);
             $entityManager->flush();

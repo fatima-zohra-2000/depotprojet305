@@ -24,6 +24,20 @@
     <h1>Nouvelle Commande</h1>
 
     {{ form_start(form) }}
+
+    <h2>Client</h2>
+    <div>
+        {{ form_row(form.client, {'label': 'Client', 'attr': {'class': 'select2'}}) }}
+    </div>
+
+    <div id="new-client-form" style="display: none;">
+        {{ form_row(form.newClient.nom) }}
+        {{ form_row(form.newClient.adresse) }}
+        {{ form_row(form.newClient.tel) }}
+    </div>
+
+    <button type="button" class="add-new-client" name="add_new_client">Ajouter un nouveau client</button>
+
     <h2>Produits</h2>
     <div id="tailleCommandesContainer">
         {{ form_errors(form.tailleCommandes) }}
@@ -68,6 +82,20 @@
             var existingProduitFields = document.querySelectorAll('.select2');
             existingProduitFields.forEach(function (field) {
                 $(field).select2();
+            });
+
+
+            const addNewClientButton = document.querySelector('.add-new-client');
+            const newClientForm = document.querySelector('#new-client-form');
+
+            addNewClientButton.addEventListener('click', function() {
+                if (newClientForm.style.display === 'none') {
+                    newClientForm.style.display = 'block';
+                    addNewClientButton.textContent = 'Annuler';
+                } else {
+                    newClientForm.style.display = 'none';
+                    addNewClientButton.textContent = 'Ajouter un nouveau client';
+                }
             });
         });
     </script>
