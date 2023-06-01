@@ -37,6 +37,9 @@ class Commande
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?Client $client = null;
 
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->tailleCommandes = new ArrayCollection();
@@ -146,6 +149,18 @@ class Commande
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

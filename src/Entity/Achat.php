@@ -37,6 +37,9 @@ class Achat
     #[ORM\OneToMany(mappedBy: 'achat', targetEntity: TailleAchat::class)]
     private Collection $tailleAchats;
 
+    #[ORM\ManyToOne(inversedBy: 'achats')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->tailleAchats = new ArrayCollection();
@@ -146,6 +149,18 @@ class Achat
                 $tailleAchat->setAchat(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
