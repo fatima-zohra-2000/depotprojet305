@@ -51,6 +51,9 @@ class AchatController extends AbstractController
                 $montantTva = $total * $achat->getTVA() / 100;
                 $totalTTC = $total + $montantTva;
 
+                $user = $this->getUser();
+
+                $achat->setUser($user);
                 $achat->setMantantTVA($montantTva);
                 $achat->setTotal($totalTTC);
 

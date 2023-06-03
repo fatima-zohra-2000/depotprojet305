@@ -52,6 +52,9 @@ class CommandeController extends AbstractController
             $montantTva = $somme * $commande->getTVA() / 100;
             $total = $somme + $montantTva;
 
+            $user = $this->getUser();
+
+            $commande->setUser($user);
             $commande->setTotal($total);
             $commande->setMantantTVA($montantTva);
 
