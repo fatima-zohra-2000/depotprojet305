@@ -69,6 +69,7 @@ class Produit
         $this->updatedAt = new \DateTimeImmutable();
         $this->tailleCommandes = new ArrayCollection();
         $this->tailleAchats = new ArrayCollection();
+        $this->stock = new Stock();
     }
 
     public function getId(): ?int
@@ -259,5 +260,9 @@ class Produit
         }
 
         return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->nom;
     }
 }
