@@ -11,6 +11,9 @@
 						<span class="visually-hidden">(current)</span>
 					</a>
 				</li>
+
+				{% if app.user %}
+				{% if is_granted('ROLE_ADMIN') %}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_produit_index') }}">Produits
 					</a>
@@ -23,6 +26,8 @@
 					<a class="nav-link" href="{{ path('app_categorie_index') }}">Catégories
 					</a>
 				</li>
+				{% endif %}
+
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_commande_index') }}">Commandes
 					</a>
@@ -31,6 +36,7 @@
 					<a class="nav-link" href="{{ path('app_achat_index') }}">Achats
 					</a>
 				</li>
+				{% endif %}
 				{# {% if app.user %}
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('ingredient.index') }}">Mes ingrédients
@@ -46,10 +52,8 @@
 				<ul class="navbar-nav me-auto">
 					{% if app.user %}
 						<li class="nav-item dropdown" style="margin-right: 5rem;">
-							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.name }}</a>
+							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.name }}</a>
 							<div class="dropdown-menu">
-								
-								<div class="dropdown-divider"></div>
 								{% if 'ROLE_ADMIN' in app.user.roles %}
 									<a class="dropdown-item" href="{{ path('admin') }}">Administration</a>
 									<div class="dropdown-divider"></div>
@@ -59,12 +63,10 @@
 						</li>
 					{% else %}
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_login') }}">Connexion
-							</a>
+							<a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_register') }}">Inscription
-							</a>
+							<a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
 						</li>
 					{% endif %}
 				</ul>
