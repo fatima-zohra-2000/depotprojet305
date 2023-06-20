@@ -25,7 +25,7 @@ class Fournisseur
     private ?string $adresse = null;
 
     #[ORM\Column]
-    private ?int $telephone = null;
+    private ?string $telephone = null;
 
     #[ORM\OneToMany(mappedBy: 'fournisseur_id', targetEntity: Stock::class, orphanRemoval: true)]
     private Collection $stocks;
@@ -83,12 +83,12 @@ class Fournisseur
         return $this;
     }
 
-    public function getTelephone(): ?int
+    public function getTelephone(): ?string
     {
         return $this->telephone;
     }
 
-    public function setTelephone(int $telephone): self
+    public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
 
@@ -153,5 +153,10 @@ class Fournisseur
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom;
     }
 }

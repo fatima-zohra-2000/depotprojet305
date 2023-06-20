@@ -131,21 +131,24 @@ class ProduitCrudController extends AbstractCrudController
                 ->hideOnIndex(),
             AssociationField::new('categorie_id'),
             AssociationField::new('stock.fournisseur_id', 'Fournisseur')
-                ->setFormTypeOptions([
-                    'class' => Fournisseur::class,
-                    'choice_label' => 'nom',
-                    'query_builder' => function (FournisseurRepository $fournisseurRepository) {
-                        return $fournisseurRepository->createQueryBuilder('f')
-                            ->orderBy('f.nom', 'ASC');
-                    },
-                ])
-                ->setCrudController(FournisseurCrudController::class)
-                ->onlyOnForms(),
-            Field::new('imageFile')->setFormType(VichImageType::class),
+//                ->setFormTypeOptions([
+//                    'class' => Fournisseur::class,
+//                    'choice_label' => 'nom',
+//                    'query_builder' => function (FournisseurRepository $fournisseurRepository) {
+//                        return $fournisseurRepository->createQueryBuilder('f')
+//                            ->orderBy('f.nom', 'ASC');
+//                    },
+//                ])
+                ->setCrudController(FournisseurCrudController::class),
+//                ->onlyOnForms(),
+            Field::new('imageFile')
+                ->setFormType(VichImageType::class)
+                ->hideOnIndex(),
+
         ];
     }
 
-    public function createEntity(string $entityFqcn)
+    public function createEntity(string $entityFqcn): Produit
     {
         $produit = new Produit();
         $produit->setStock(new Stock()); // Création d'une nouvelle instance de Stock
