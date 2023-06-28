@@ -3,6 +3,18 @@
 {% block title %}Produit index{% endblock %}
 
 {% block body %}
+
+    <style>
+        .card {
+            max-width: 300px; /* Définir une largeur maximale pour les cartes */
+        }
+
+        .card img {
+            width: 100%; /* Forcer le redimensionnement des images pour s'adapter à la largeur de la carte */
+            height: auto; /* Assurer la proportionnalité de l'image */
+        }
+    </style>
+
     <h1>Produit index</h1>
 
     <table class="table">
@@ -46,4 +58,21 @@
     </table>
 
     <a href="{{ path('app_produit_new') }}">Créer un nouveau produit</a>
+
+{% block content_list %}
+    <div class="row">
+        {% for produit in produits %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="card-img-top" alt="Image du produit">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ produit.nom }}</h5>
+                        <p class="card-text">Prix : {{ produit.prix }}</p>
+                        <p class="card-text">Quantité : {{ produit.stock.quantite }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
 {% endblock %}
