@@ -6,10 +6,12 @@ use App\Entity\Categorie;
 use App\Entity\Produit;
 use App\Entity\Stock;
 use App\Form\StockType;
+use App\Form\StockProduitType;
 use App\Entity\Fournisseur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -57,7 +59,7 @@ class ProduitType extends AbstractType
             ])
 
 //            ceci fait référence au formulaire Stock pour reprendre les champs qu'y existe. C'est aussi la propriété récupérer dans la vu : form.Stock.quantite
-            ->add('Stock', StockType::class, [
+            ->add('Stock', StockProduitType::class, [
                 'required' => true,
                 'mapped' => false,
                 'property_path' => 'stock.quantite',

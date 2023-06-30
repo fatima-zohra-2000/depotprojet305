@@ -35,12 +35,27 @@
                 <td>{{ produit.id }}</td>
                 <td>{{ produit.nom }}</td>
                 <td>{{ produit.prix }}</td>
-                {% if produit.stock is not null %}
-                <td>{{ produit.stock.quantite }}</td>
-                <td>{{ produit.stock.fournisseurId.nom }}</td>
+{#                {% if produit.stock is not null %}#}
+{#                <td>{{ produit.stock.quantite }}</td>#}
+{#                <td>{{ produit.stock.fournisseurId.nom }}</td>#}
+{#                {% else %}#}
+{#                <td>-</td>#}
+{#                <td>-</td>#}
+{#                {% endif %}#}
+                {% set totalQuantite = 0 %}
+                {% set stockExist = false %}
+
+                {% for stockItem in produit.stock %}
+                    {% set stockExist = true %}
+                    {% set totalQuantite = totalQuantite + stockItem.quantite %}
+                {% endfor %}
+
+                {% if stockExist %}
+                    <td>{{ totalQuantite }}</td>
+                    <td>{{ produit.stock.first.fournisseurId.nom }}</td>
                 {% else %}
-                <td>-</td>
-                <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
                 {% endif %}
                 <td>{{ produit.ordonnance ? 'Oui' : 'Non' }}</td>
                 <td>
@@ -68,7 +83,11 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ produit.nom }}</h5>
                         <p class="card-text">Prix : {{ produit.prix }}</p>
-                        <p class="card-text">Quantité : {{ produit.stock.quantite }}</p>
+                        {% set stock = 0 %}
+                        {% for stockItem in produit.stock %}
+                            {% set stock = stock + stockItem.quantite %}
+                        {% endfor %}
+                        <p class="card-text">Quantité : {{ stock }}</p>
                     </div>
                 </div>
             </div>

@@ -42,8 +42,8 @@ class Produit
     #[ORM\Column]
     private ?bool $ordonnance = null;
 
-    #[ORM\OneToOne(mappedBy: 'produit_id', cascade: ['persist', 'remove'])]
-    private ?Stock $stock = null;
+    #[ORM\OneToMany(mappedBy: 'produit_id', targetEntity: Stock::class)]
+    private Collection $stock;
 
     // #[ORM\ManyToMany(targetEntity: TailleCommande::class, mappedBy: 'produit_id')]
     // private Collection $tailleCommandes;
@@ -69,7 +69,7 @@ class Produit
         $this->updatedAt = new \DateTimeImmutable();
         $this->tailleCommandes = new ArrayCollection();
         $this->tailleAchats = new ArrayCollection();
-        $this->stock = new Stock();
+        $this->stock = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -161,12 +161,12 @@ class Produit
         return $this;
     }
 
-    public function getStock(): ?Stock
+    public function getStock(): Collection
     {
         return $this->stock;
     }
 
-    public function setStock(Stock $stock): self
+    public function setStock(Collection $stock): self
     {
         // set the owning side of the relation if necessary
         if ($stock->getProduitId() !== $this) {

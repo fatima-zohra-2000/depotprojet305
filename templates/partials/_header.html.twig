@@ -5,72 +5,55 @@
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbarColor01">
-			<ul class="navbar-nav me-auto">
+			<ul class="navbar-nav mx-auto justify-content-center spaced-navbar">
 				<li class="nav-item">
-					<a class="nav-link active" href="{{ path('app_home') }}">Accueil
-						<span class="visually-hidden">(current)</span>
-					</a>
+					<a class="nav-link {% if app.request.attributes.get('_route') == 'app_home' %}active{% endif %}" href="{{ path('app_home') }}">Accueil</a>
 				</li>
 
 				{% if app.user %}
-				{% if is_granted('ROLE_ADMIN') %}
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_produit_index') }}">Produits
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_fournisseur_index') }}">Fournisseurs
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_categorie_index') }}">Catégories
-					</a>
-				</li>
-				{% endif %}
-
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_commande_index') }}">Commandes
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_achat_index') }}">Achats
-					</a>
-				</li>
-				{% endif %}
-				{# {% if app.user %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('ingredient.index') }}">Mes ingrédients
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('recipe.index') }}">Mes recettes
-						</a>
-					</li>
-				{% endif %} #}
-			</ul>
-			<div class="d-flex">
-				<ul class="navbar-nav me-auto">
-					{% if app.user %}
-						<li class="nav-item dropdown" style="margin-right: 5rem;">
-							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.name }}</a>
-							<div class="dropdown-menu">
-								{% if 'ROLE_ADMIN' in app.user.roles %}
-									<a class="dropdown-item" href="{{ path('admin') }}">Administration</a>
-									<div class="dropdown-divider"></div>
-								{% endif %}
-								<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
-							</div>
-						</li>
-					{% else %}
+					{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+							<a class="nav-link {% if app.request.attributes.get('_route') == 'app_produit_index' %}active{% endif %}" href="{{ path('app_produit_index') }}">Produits</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
+							<a class="nav-link {% if app.request.attributes.get('_route') == 'app_fournisseur_index' %}active{% endif %}" href="{{ path('app_fournisseur_index') }}">Fournisseurs</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if app.request.attributes.get('_route') == 'app_categorie_index' %}active{% endif %}" href="{{ path('app_categorie_index') }}">Catégories</a>
 						</li>
 					{% endif %}
-				</ul>
-			</div>
+					<li class="nav-item">
+						<a class="nav-link {% if app.request.attributes.get('_route') == 'app_commande_index' %}active{% endif %}" href="{{ path('app_commande_index') }}">Commandes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if app.request.attributes.get('_route') == 'app_achat_index' %}active{% endif %}" href="{{ path('app_achat_index') }}">Achats</a>
+					</li>
+				{% endif %}
+			</ul>
+
+			<ul class="navbar-nav ml-auto">
+				{% if app.user %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{ app.user.name }}
+						</a>
+						<div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+							{% if 'ROLE_ADMIN' in app.user.roles %}
+								<a class="dropdown-item" href="{{ path('admin') }}">Administration</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+							<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+						</div>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
+					</li>
+				{% endif %}
+			</ul>
 		</div>
 	</div>
 </nav>

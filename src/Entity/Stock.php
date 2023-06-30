@@ -13,8 +13,8 @@ class Stock
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'stock', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'stock')]
+    #[ORM\JoinColumn(name: "produit_id", referencedColumnName: "id", nullable: false)]
     private ?Produit $produit_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'stocks')]

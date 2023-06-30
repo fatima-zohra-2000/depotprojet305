@@ -32,8 +32,6 @@ Encore
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
-    //Enabling sass preprocessor
-    .enableSassLoader()
 
     /*
      * FEATURE CONFIG
@@ -59,8 +57,12 @@ Encore
         config.corejs = '3.23';
     })
 
+    .configureWatchOptions(watchOptions => {
+        watchOptions.poll = 250; // check for changes every 250 milliseconds
+    })
+
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
@@ -73,7 +75,7 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();

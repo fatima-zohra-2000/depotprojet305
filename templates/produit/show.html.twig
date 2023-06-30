@@ -28,17 +28,21 @@
                 <th>Ordonnance</th>
                 <td>{{ produit.ordonnance ? 'Oui' : 'Non' }}</td>
             </tr>
-            {% if stock is not null and stock.quantite is not null %}
-            <tr>
-                <th>Quantité</th>
-                <td>{{ stock.quantite }}</td>
-            </tr>
-            {% endif %}
-            {% if stock is not null and stock.fournisseurId.nom is not null %}
-            <tr>
-                <th>Fournisseur</th>
-                <td>{{ stock.fournisseurId.nom }}</td>
-            </tr>
+            {% if produit.stock is not null %}
+                    {% for stock in produit.stock %}
+                        <tr>
+                            <th>Quantité</th>
+                            <td>
+                                    {{ stock.quantite }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Fournisseur</th>
+                            <td>
+                                    {{ stock.fournisseurId.nom }}
+                            </td>
+                        </tr>
+                    {% endfor %}
             {% endif %}
         </tbody>
     </table>

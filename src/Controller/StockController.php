@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
 use App\Entity\Stock;
 use App\Form\StockType;
 use App\Repository\StockRepository;
@@ -31,6 +32,9 @@ class StockController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $produit = $stock->getProduitId();
+            $stock->setProduitId($produit);
+
             $stockRepository->save($stock, true);
 
             return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
