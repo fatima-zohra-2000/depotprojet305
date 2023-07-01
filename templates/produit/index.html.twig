@@ -4,37 +4,25 @@
 
 {% block body %}
 
-    <style>
-        .card {
-            max-width: 300px; /* Définir une largeur maximale pour les cartes */
-        }
 
-        .card img {
-            width: 100%; /* Forcer le redimensionnement des images pour s'adapter à la largeur de la carte */
-            height: auto; /* Assurer la proportionnalité de l'image */
-        }
-    </style>
-
-    <h1>Produit index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Fournisseur</th>
-                <th>Ordonnance</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for produit in produits %}
-            <tr>
-                <td>{{ produit.id }}</td>
-                <td>{{ produit.nom }}</td>
-                <td>{{ produit.prix }}</td>
+{#    <table class="table">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th>Id</th>#}
+{#                <th>Nom</th>#}
+{#                <th>Prix</th>#}
+{#                <th>Quantité</th>#}
+{#                <th>Fournisseur</th>#}
+{#                <th>Ordonnance</th>#}
+{#                <th>actions</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for produit in produits %}#}
+{#            <tr>#}
+{#                <td>{{ produit.id }}</td>#}
+{#                <td>{{ produit.nom }}</td>#}
+{#                <td>{{ produit.prix }}</td>#}
 {#                {% if produit.stock is not null %}#}
 {#                <td>{{ produit.stock.quantite }}</td>#}
 {#                <td>{{ produit.stock.fournisseurId.nom }}</td>#}
@@ -42,56 +30,64 @@
 {#                <td>-</td>#}
 {#                <td>-</td>#}
 {#                {% endif %}#}
-                {% set totalQuantite = 0 %}
-                {% set stockExist = false %}
+{#                {% set totalQuantite = 0 %}#}
+{#                {% set stockExist = false %}#}
 
-                {% for stockItem in produit.stock %}
-                    {% set stockExist = true %}
-                    {% set totalQuantite = totalQuantite + stockItem.quantite %}
-                {% endfor %}
+{#                {% for stockItem in produit.stock %}#}
+{#                    {% set stockExist = true %}#}
+{#                    {% set totalQuantite = totalQuantite + stockItem.quantite %}#}
+{#                {% endfor %}#}
 
-                {% if stockExist %}
-                    <td>{{ totalQuantite }}</td>
-                    <td>{{ produit.stock.first.fournisseurId.nom }}</td>
-                {% else %}
-                    <td>-</td>
-                    <td>-</td>
-                {% endif %}
-                <td>{{ produit.ordonnance ? 'Oui' : 'Non' }}</td>
-                <td>
-                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}">Voir</a>
-                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">Modifier</a>
-                    <a href="{{ path('app_stock_edit', {'id': produit.id}) }}">Modifier le stock</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">Il n'existe aucun produit</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{#                {% if stockExist %}#}
+{#                    <td>{{ totalQuantite }}</td>#}
+{#                    <td>{{ produit.stock.first.fournisseurId.nom }}</td>#}
+{#                {% else %}#}
+{#                    <td>-</td>#}
+{#                    <td>-</td>#}
+{#                {% endif %}#}
+{#                <td>{{ produit.ordonnance ? 'Oui' : 'Non' }}</td>#}
+{#                <td>#}
+{#                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}">Voir</a>#}
+{#                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">Modifier</a>#}
+{#                    <a href="{{ path('app_stock_edit', {'id': produit.id}) }}">Modifier le stock</a>#}
+{#                </td>#}
+{#            </tr>#}
+{#        {% else %}#}
+{#            <tr>#}
+{#                <td colspan="6">Il n'existe aucun produit</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
 
-    <a href="{{ path('app_produit_new') }}">Créer un nouveau produit</a>
+{#    <a href="{{ path('app_produit_new') }}">Créer un nouveau produit</a>#}
 
 {% block content_list %}
-    <div class="row">
-        {% for produit in produits %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="card-img-top" alt="Image du produit">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ produit.nom }}</h5>
-                        <p class="card-text">Prix : {{ produit.prix }}</p>
-                        {% set stock = 0 %}
-                        {% for stockItem in produit.stock %}
-                            {% set stock = stock + stockItem.quantite %}
-                        {% endfor %}
-                        <p class="card-text">Quantité : {{ stock }}</p>
+    <div class="container">
+        <h1>Gestion du stock</h1>
+        <div class="row g-4">
+            {% for produit in produits %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card card-produit-index mx-3">
+                        <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="card-img-top" alt="Image du produit">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ produit.nom }}</h5>
+                            <p class="card-text">Prix : {{ produit.prix }}</p>
+                            {% set stock = 0 %}
+                            {% for stockItem in produit.stock %}
+                                {% set stock = stock + stockItem.quantite %}
+                            {% endfor %}
+                            <p class="card-text">Quantité : {{ stock }}</p>
+                            {#            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>#}
+                            <a href="{{ path('app_produit_show', { id: produit.id }) }}" class="btn btn-primary">Détails</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+{#                {% if loop.index % 3 == 0 %}#}
+{#                    </div><div class="row g-3">#}
+{#                {% endif %}#}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 {% endblock %}

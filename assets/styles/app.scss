@@ -3,12 +3,40 @@ body {
 }
 
 // customize some Bootstrap variables
-$primary: darken(#428bca, 20%);
+//$primary: darken(#428bca, 20%);
+$primary: #02590F;
+$secondary: #A0D9A4;
+//$success:       $green !default;
+//$info:          $cyan !default;
+//$warning:       $yellow !default;
+//$danger:        $red !default;
+//$light:         $gray-100 !default;
+//$dark:          $gray-900 !default;
+//$body-bg: #f7f7f7;
+$body-bg: #f8f9fa;
+
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
 
-//************* Navbar *************//
+
+//***************************** Navbar ***************************//
 .spaced-navbar .nav-item {
-    margin-right: 5rem; /* Ajustez la valeur selon vos besoins */
+    margin-right: 5rem;
 }
+
+
+//***************************** Produit *************************//
+
+//********** Produit index page *********//
+.card-produit-index {
+    .card-img-top {
+        width: 100%;
+        height: 15vw;
+        object-fit: cover;
+    }
+}
+.card-produit-index:hover{
+
+}
+
