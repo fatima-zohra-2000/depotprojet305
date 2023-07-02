@@ -14,16 +14,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/produit')]
 class ProduitController extends AbstractController
 {
     #[Route('/', name: 'app_produit_index', methods: ['GET'])]
-    public function index(ProduitRepository $produitRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator, ProduitRepository $produitRepository): Response
     {
+        // Récupérez la liste complète des produits
+        $produits = $produitRepository->findAll();
+
+        // Paginez les produits
+        $pagination = $paginator->paginate(
+            $produits,
+            $request->query->getInt('page', 1), // Récupérez le numéro de page à partir de la requête, par défaut 1
+            5 // Nombre de produits par page
+        );
+
         return $this->render('produit/index.html.twig', [
-            'produits' => $produitRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 

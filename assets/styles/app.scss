@@ -5,20 +5,140 @@ body {
 // customize some Bootstrap variables
 //$primary: darken(#428bca, 20%);
 $primary: #02590F;
-$secondary: #A0D9A4;
-//$success:       $green !default;
+$primary-accent : #037032;
+$secondary: #BEE6D4;
+$secondary-accent:  #C0D9BF;
+$success:   #05996F;
+$success-accent:   #038C17;
+
 //$info:          $cyan !default;
 //$warning:       $yellow !default;
 //$danger:        $red !default;
 //$light:         $gray-100 !default;
 //$dark:          $gray-900 !default;
-//$body-bg: #f7f7f7;
 $body-bg: #f8f9fa;
 
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
 
+//***************************** Body *****************************//
+//body {
+//    margin: 0;
+//    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+//    font-size: 1rem;
+//    font-weight: 400;
+//    line-height: 1.5;
+//    color: #858796;
+//    text-align: left;
+//    background-color: #fff;
+//}
+
+//***************************** Btn ******************************//
+.btn-primary:hover {
+    color: #fff;
+    background-color: $primary-accent;
+    border-color: $primary-accent;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+    color: #fff;
+    background-color: $primary-accent;
+    border-color: $primary-accent;
+    box-shadow: 0 0 0 0.2rem rgba(105, 136, 228, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: $primary-accent;
+    border-color: $primary-accent;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: $primary;
+    border-color: $primary;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(105, 136, 228, 0.5);
+}
+
+.btn-secondary {
+    color: darkslategrey;
+    background-color: $secondary;
+    border-color: $secondary;
+}
+
+.btn-secondary:hover {
+    color: darkslategrey;
+    background-color: $secondary-accent;
+    border-color: $secondary-accent;
+}
+
+.btn-secondary:focus, .btn-secondary.focus {
+    color: darkslategrey;
+    background-color: $secondary-accent;
+    border-color: $secondary-accent;
+    box-shadow: 0 0 0 0.2rem rgba(151, 153, 166, 0.5);
+}
+
+.btn-secondary.disabled, .btn-secondary:disabled {
+    color: darkslategrey;
+    background-color: $secondary-accent;
+    border-color: $secondary-accent;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-secondary.dropdown-toggle {
+    color: darkslategrey;
+    background-color: $secondary;
+    border-color: $secondary;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(151, 153, 166, 0.5);
+}
+
+.btn-success {
+    color: #fff;
+    background-color: $success;
+    border-color: $success;
+}
+
+.btn-success:hover {
+    color: #fff;
+    background-color: $success-accent;
+    border-color: $success-accent;
+}
+
+.btn-success:focus, .btn-success.focus {
+    color: #fff;
+    background-color: $success-accent;
+    border-color: $success-accent;
+    box-shadow: 0 0 0 0.2rem rgba(62, 208, 156, 0.5);
+}
+
+.btn-success.disabled, .btn-success:disabled {
+    color: #fff;
+    background-color: $success-accent;
+    border-color: $success-accent;
+}
+
+.btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+.show > .btn-success.dropdown-toggle {
+    color: #fff;
+    background-color: $success;
+    border-color: $success;
+}
+
+.btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+.show > .btn-success.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(62, 208, 156, 0.5);
+}
 
 //***************************** Navbar ***************************//
 .spaced-navbar .nav-item {
@@ -34,13 +154,57 @@ $body-bg: #f8f9fa;
 
 //********** Produit index page *********//
 .card-produit-index {
+
     .card-img-top {
         width: 100%;
-        height: 15vw;
+        height: 10vw;
         object-fit: cover;
     }
 }
-.card-produit-index:hover{
 
+// Pagination //
+.pagination{
+    color: #0dcaf0;
 }
+//.custom-pagination {
+//    display: flex;
+//    justify-content: flex-end;
+//
+//    .pagination {
+//        li {
+//            display: inline-block;
+//            margin-right: 5px;
+//
+//            a {
+//                display: inline-block;
+//                padding: 8px 12px;
+//                border: 1px solid #ddd;
+//                color: #333;
+//                text-decoration: none;
+//                transition: background-color 0.3s;
+//
+//                &:hover {
+//                    background-color: #f4f4f4;
+//                }
+//
+//                &.active {
+//                    background-color: #337ab7;
+//                    color: #fff;
+//                    border-color: #337ab7;
+//                }
+//            }
+//        }
+//
+//        .disabled {
+//            opacity: 0.5;
+//            pointer-events: none;
+//        }
+//
+//        .gap {
+//            display: inline-block;
+//            margin-right: 5px;
+//            color: #999;
+//        }
+//    }
+//}
 

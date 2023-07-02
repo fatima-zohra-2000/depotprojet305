@@ -1,93 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Produit index{% endblock %}
+{% block title %}Gestion de Stock{% endblock %}
 
 {% block body %}
 
+    {% block content_list %}
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4 px-4">
+            <h1 class="h3 mb-0 text-gray-800">Gestion du Stock</h1>
+            <span class="d-lg-inline">
+                <a href="{{ path('app_stock_new') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                    Nouveau Stock
+                </a>
+                <a href="{{ path('app_produit_new')}}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+                    Créer un nouveau produit
+                </a>
+            </span>
+        </div>
 
-{#    <table class="table">#}
-{#        <thead>#}
-{#            <tr>#}
-{#                <th>Id</th>#}
-{#                <th>Nom</th>#}
-{#                <th>Prix</th>#}
-{#                <th>Quantité</th>#}
-{#                <th>Fournisseur</th>#}
-{#                <th>Ordonnance</th>#}
-{#                <th>actions</th>#}
-{#            </tr>#}
-{#        </thead>#}
-{#        <tbody>#}
-{#        {% for produit in produits %}#}
-{#            <tr>#}
-{#                <td>{{ produit.id }}</td>#}
-{#                <td>{{ produit.nom }}</td>#}
-{#                <td>{{ produit.prix }}</td>#}
-{#                {% if produit.stock is not null %}#}
-{#                <td>{{ produit.stock.quantite }}</td>#}
-{#                <td>{{ produit.stock.fournisseurId.nom }}</td>#}
-{#                {% else %}#}
-{#                <td>-</td>#}
-{#                <td>-</td>#}
-{#                {% endif %}#}
-{#                {% set totalQuantite = 0 %}#}
-{#                {% set stockExist = false %}#}
-
-{#                {% for stockItem in produit.stock %}#}
-{#                    {% set stockExist = true %}#}
-{#                    {% set totalQuantite = totalQuantite + stockItem.quantite %}#}
-{#                {% endfor %}#}
-
-{#                {% if stockExist %}#}
-{#                    <td>{{ totalQuantite }}</td>#}
-{#                    <td>{{ produit.stock.first.fournisseurId.nom }}</td>#}
-{#                {% else %}#}
-{#                    <td>-</td>#}
-{#                    <td>-</td>#}
-{#                {% endif %}#}
-{#                <td>{{ produit.ordonnance ? 'Oui' : 'Non' }}</td>#}
-{#                <td>#}
-{#                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}">Voir</a>#}
-{#                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">Modifier</a>#}
-{#                    <a href="{{ path('app_stock_edit', {'id': produit.id}) }}">Modifier le stock</a>#}
-{#                </td>#}
-{#            </tr>#}
-{#        {% else %}#}
-{#            <tr>#}
-{#                <td colspan="6">Il n'existe aucun produit</td>#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{#        </tbody>#}
-{#    </table>#}
-
-{#    <a href="{{ path('app_produit_new') }}">Créer un nouveau produit</a>#}
-
-{% block content_list %}
-    <div class="container">
-        <h1>Gestion du stock</h1>
-        <div class="row g-4">
-            {% for produit in produits %}
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card card-produit-index mx-3">
-                        <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="card-img-top" alt="Image du produit">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ produit.nom }}</h5>
-                            <p class="card-text">Prix : {{ produit.prix }}</p>
-                            {% set stock = 0 %}
-                            {% for stockItem in produit.stock %}
-                                {% set stock = stock + stockItem.quantite %}
-                            {% endfor %}
-                            <p class="card-text">Quantité : {{ stock }}</p>
-                            {#            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>#}
-                            <a href="{{ path('app_produit_show', { id: produit.id }) }}" class="btn btn-primary">Détails</a>
+        <div class="container px-4">
+            <div class="row g-4 mb-4">
+                {% for produit in pagination %}
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card card-produit-index bg-white">
+                            <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="card-img-top" alt="Image du produit">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3 font-weight-bold text-primary text-lg">{{ produit.nom }}</h6>
+                                <p class="card-text m-0 text-gray-800"><span class="font-weight-bold">Prix : </span>{{ produit.prix }}</p>
+                                {% set stock = 0 %}
+                                {% for stockItem in produit.stock %}
+                                    {% set stock = stock + stockItem.quantite %}
+                                {% endfor %}
+                                <p class="card-text text-gray-800"><span class="font-weight-bold">Quantité : </span>{{ stock }}</p>
+                                <a href="{{ path('app_produit_show', { id: produit.id }) }}" class="btn btn-primary d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Détails</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-{#                {% if loop.index % 3 == 0 %}#}
-{#                    </div><div class="row g-3">#}
-{#                {% endif %}#}
-            {% endfor %}
+                {% endfor %}
+            </div>
+            <!-- Pagination -->
+            <nav aria-label="Pagination" class="custom-pagination">
+                {{ knp_pagination_render(pagination, null, {}, {
+                    'align': 'center',
+                    'rounded': true,
+                }) }}
+            </nav>
         </div>
-    </div>
-{% endblock %}
+    {% endblock %}
 {% endblock %}
