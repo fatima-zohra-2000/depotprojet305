@@ -38,6 +38,7 @@ class ProduitType extends AbstractType
             ->add('categorie_id', EntityType::class, [
                 'class' => Categorie::class,
                 'label' => 'Catégorie',
+                'placeholder' => 'Sélectionnez une catégorie',
                 'attr' => ['class' => 'select2'], // le plugin Select2 (optionnel)
             ])
             ->add('ordonnance', CheckboxType::class, [

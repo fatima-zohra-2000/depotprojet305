@@ -11,11 +11,13 @@ import './styles/app.scss';
 // start the Stimulus application
 import './bootstrap';
 
-const $ = require('jquery');
+import $ from 'jquery';
+
+// const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
 
 // create global $ and jQuery variables
-global.$ = global.jQuery = $;
+// global.$ = global.jQuery = $;
 
 // the bootstrap module doesn't export/return anything
 require('bootstrap');
@@ -26,6 +28,13 @@ require('bootstrap');
 
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
+});
+
+// Initialize Select2 on your select element(s)
+import 'select2';                       // globally assign select2 fn to $ element
+import 'select2/dist/css/select2.css';  // optional if you have css loader
+$(document).ready(function() {
+    $('.select2').select2();
 });
 
 // this waits for Turbo Drive to load

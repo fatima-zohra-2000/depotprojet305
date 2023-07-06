@@ -17,12 +17,24 @@ $body-bg: #f8f9fa;
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
+@import "~select2/dist/css/select2.css";
 
-//***************************** Body *****************************//
+//***************************** common *****************************//
 li.active{
     background-color: $primary;
 }
-
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
 //***************************** Btn ******************************//
 .btn {
     border : none;

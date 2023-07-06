@@ -19,10 +19,6 @@ class StockType extends AbstractType
         $builder
             ->add('produit_id', EntityType::class, [
                 'class' => Produit::class,
-//                'query_builder' => function (EntityRepository $er) {
-//                    return $er->createQueryBuilder('p')
-//                        ->orderBy('p.nom', 'ASC');
-//                },
                 'choice_label' => 'nom',
                 'choice_value' => 'id',
                 'placeholder' => 'Sélectionnez un produit',
@@ -33,6 +29,7 @@ class StockType extends AbstractType
                 'label' => 'Fournisseur',
                 'class' => Fournisseur::class, //Pour marquer que c'est un objet Fournisseur et récupérer son id
                 'choice_label' => 'nom',
+                'placeholder' => 'Sélectionnez un fournisseur',
                 'attr' => ['class' => 'select2'], // le plugin Select2 (optionnel)
             ])
         ;
