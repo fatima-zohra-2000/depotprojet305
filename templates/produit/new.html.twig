@@ -16,7 +16,7 @@
                     </div>
 
                     <div class="mb-4">
-                        {{ form_label(form.prix, 'Prix :', {'label_attr': {'class': 'font-weight-bold text-gray-800'}}) }}
+                        {{ form_label(form.prix, 'Prix(€) :', {'label_attr': {'class': 'font-weight-bold text-gray-800'}}) }}
                         {{ form_widget(form.prix, {'attr': {'class': 'form-control bg-white'}}) }}
                     </div>
 
@@ -53,11 +53,4 @@
             </div>
         </div>
     </div>
-    <footer class="sticky-footer bg-white mt-5">
-        <div class="container">
-            <div class="copyright text-center my-auto">
-                <span>Mentions Légales &copy; Point de vente 2023</span>
-            </div>
-        </div>
-    </footer>
 {% endblock %}

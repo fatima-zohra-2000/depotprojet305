@@ -73,11 +73,10 @@
                 </tbody>
             </table>
 
-            <div class="d-flex mt-5">
+            <div class="d-flex mt-5 mb-5">
                 <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="mx-2 d-none d-sm-inline-block shadow-sm btn btn-sm btn-secondary">Modifier</a>
                 {{ include('produit/_delete_form.html.twig') }}
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
