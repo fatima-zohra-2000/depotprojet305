@@ -1,7 +1,3 @@
-body {
-    background-color: lightgray;
-}
-
 // customize some Bootstrap variables
 //$primary: darken(#428bca, 20%);
 $primary: #02590F;
@@ -23,42 +19,41 @@ $body-bg: #f8f9fa;
 @import "~bootstrap/scss/bootstrap";
 
 //***************************** Body *****************************//
-//body {
-//    margin: 0;
-//    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-//    font-size: 1rem;
-//    font-weight: 400;
-//    line-height: 1.5;
-//    color: #858796;
-//    text-align: left;
-//    background-color: #fff;
-//}
+li.active{
+    background-color: $primary;
+}
 
 //***************************** Btn ******************************//
+.btn {
+    border : none;
+}
 .btn-primary:hover {
     color: #fff;
     background-color: $primary-accent;
-    border-color: $primary-accent;
+    border: none $primary-accent;
 }
-
+.btn-primary:active{
+    background-color: $primary;
+    border: none;
+}
 .btn-primary:focus, .btn-primary.focus {
     color: #fff;
     background-color: $primary-accent;
-    border-color: $primary-accent;
+    border: none $primary-accent;
     box-shadow: 0 0 0 0.2rem rgba(105, 136, 228, 0.5);
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
     color: #fff;
     background-color: $primary-accent;
-    border-color: $primary-accent;
+    border: none $primary-accent;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
     color: #fff;
     background-color: $primary;
-    border-color: $primary;
+    border: none $primary;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
@@ -69,33 +64,33 @@ $body-bg: #f8f9fa;
 .btn-secondary {
     color: darkslategrey;
     background-color: $secondary;
-    border-color: $secondary;
+    border: none $secondary;
 }
 
 .btn-secondary:hover {
     color: darkslategrey;
     background-color: $secondary-accent;
-    border-color: $secondary-accent;
+    border: none $secondary-accent;
 }
 
 .btn-secondary:focus, .btn-secondary.focus {
     color: darkslategrey;
     background-color: $secondary-accent;
-    border-color: $secondary-accent;
+    border: none $secondary-accent;
     box-shadow: 0 0 0 0.2rem rgba(151, 153, 166, 0.5);
 }
 
 .btn-secondary.disabled, .btn-secondary:disabled {
     color: darkslategrey;
     background-color: $secondary-accent;
-    border-color: $secondary-accent;
+    border: none $secondary-accent;
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-secondary.dropdown-toggle {
     color: darkslategrey;
     background-color: $secondary;
-    border-color: $secondary;
+    border: none $secondary;
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
@@ -106,33 +101,33 @@ $body-bg: #f8f9fa;
 .btn-success {
     color: #fff;
     background-color: $success;
-    border-color: $success;
+    border: none $success;
 }
 
 .btn-success:hover {
     color: #fff;
     background-color: $success-accent;
-    border-color: $success-accent;
+    border: none $success-accent;
 }
 
 .btn-success:focus, .btn-success.focus {
     color: #fff;
     background-color: $success-accent;
-    border-color: $success-accent;
+    border: none $success-accent;
     box-shadow: 0 0 0 0.2rem rgba(62, 208, 156, 0.5);
 }
 
 .btn-success.disabled, .btn-success:disabled {
     color: #fff;
     background-color: $success-accent;
-    border-color: $success-accent;
+    border: none $success-accent;
 }
 
 .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
 .show > .btn-success.dropdown-toggle {
     color: #fff;
     background-color: $success;
-    border-color: $success;
+    border: none $success;
 }
 
 .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
@@ -140,6 +135,22 @@ $body-bg: #f8f9fa;
     box-shadow: 0 0 0 0.2rem rgba(62, 208, 156, 0.5);
 }
 
+
+.btn-circle {
+    border-radius: 100%;
+    height: 2.5rem;
+    width: 2.5rem;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-circle.btn-sm, .btn-group-sm > .btn-circle.btn {
+    height: 1.8rem;
+    width: 1.8rem;
+    font-size: 0.75rem;
+}
 //***************************** Navbar ***************************//
 .spaced-navbar .nav-item {
     margin-right: 5rem;
@@ -149,7 +160,9 @@ $body-bg: #f8f9fa;
     background-image: linear-gradient(180deg, #02590F 10%, #038C17 100%);
     background-size: cover;
 }
-
+.active-page{
+    background-color: $primary;
+}
 //***************************** Produit *************************//
 
 //********** Produit index page *********//
@@ -162,49 +175,6 @@ $body-bg: #f8f9fa;
     }
 }
 
-// Pagination //
-.pagination{
-    color: #0dcaf0;
-}
-//.custom-pagination {
-//    display: flex;
-//    justify-content: flex-end;
-//
-//    .pagination {
-//        li {
-//            display: inline-block;
-//            margin-right: 5px;
-//
-//            a {
-//                display: inline-block;
-//                padding: 8px 12px;
-//                border: 1px solid #ddd;
-//                color: #333;
-//                text-decoration: none;
-//                transition: background-color 0.3s;
-//
-//                &:hover {
-//                    background-color: #f4f4f4;
-//                }
-//
-//                &.active {
-//                    background-color: #337ab7;
-//                    color: #fff;
-//                    border-color: #337ab7;
-//                }
-//            }
-//        }
-//
-//        .disabled {
-//            opacity: 0.5;
-//            pointer-events: none;
-//        }
-//
-//        .gap {
-//            display: inline-block;
-//            margin-right: 5px;
-//            color: #999;
-//        }
-//    }
-//}
 
+
+//**************************** Footer *************************//

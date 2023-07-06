@@ -32,7 +32,8 @@ class StockType extends AbstractType
             ->add('fournisseur_id', EntityType::class, [
                 'label' => 'Fournisseur',
                 'class' => Fournisseur::class, //Pour marquer que c'est un objet Fournisseur et récupérer son id
-                'choice_label' => 'nom'
+                'choice_label' => 'nom',
+                'attr' => ['class' => 'select2'], // le plugin Select2 (optionnel)
             ])
         ;
     }

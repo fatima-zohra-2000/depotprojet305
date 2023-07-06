@@ -17,19 +17,76 @@
 
 {% block title %}Création d'un produit{% endblock %}
 
-{% block body %}
-    <h1>Création d'un produit</h1>
+{#{% block body %}#}
+{#    <h1>Création d'un produit</h1>#}
 
-    {{ form_start(form) }}
-    {{ form_row(form.nom) }}
-    {{ form_row(form.prix) }}
-    {{ form_row(form.categorie_id) }}
-    {{ form_row(form.ordonnance) }}
-    {{ form_row(form.imageFile) }}
-    {{ form_row(form.Stock.quantite) }}
-    {{ form_row(form.Stock.fournisseur_id) }}
+{#    {{ form_start(form) }}#}
+{#    {{ form_row(form.nom) }}#}
+{#    {{ form_row(form.prix) }}#}
+{#    {{ form_row(form.categorie_id) }}#}
+{#    {{ form_row(form.ordonnance) }}#}
+{#    {{ form_row(form.imageFile) }}#}
+{#    {{ form_row(form.Stock.quantite) }}#}
+{#    {{ form_row(form.Stock.fournisseur_id) }}#}
 {#    <div class="hiding" style="display: none;">{{ form_row(form.Stock.produit_id) }}</div>#}
-    {# include the rest of the fields here #}
-    <button type="submit" class="btn btn-primary">Créer</button>
-    {{ form_end(form) }}
+{#    #}{# include the rest of the fields here #}
+{#    <button type="submit" class="btn btn-primary">Créer</button>#}
+{#    {{ form_end(form) }}#}
+{#{% endblock %}#}
+
+{% block body %}
+    <div class="mx-4 my-3">
+        <h1 class="h1 text-gray-800 mb-5 text-center">Création d'un produit</h1>
+
+        <div class="card py-3 px-5 w-75 mx-auto">
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="mb-4">
+                    {{ form_label(form.nom, 'Nom :') }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="mb-4">
+                    {{ form_label(form.prix, 'Prix :') }}
+                    {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="mb-4">
+                    {{ form_label(form.categorie_id, 'Catégorie :') }}
+                    {{ form_widget(form.categorie_id, {'attr': {'class': 'form-control custom-select select2'}}) }}
+                </div>
+    {#            <div class="form-check mb-3 form-switch">#}
+    {#                {{ form_label(form.ordonnance, 'Ordonnance', {'label_attr': {'class': 'form-check-label', 'style': 'width: auto'}}) }}#}
+    {#                {{ form_widget(form.ordonnance, {'attr': {'class': 'form-check-input'}}) }}#}
+    {#                {{ form_row(form.ordonnance, { 'label': 'Ordonnance', 'attr': {'class': 'form-check-input'} }) }}#}
+    {#            </div>#}
+                <div class="form-check form-switch mb-4 mt-4">
+                    {{ form_widget(form.ordonnance) }}
+                    {{ form_label(form.ordonnance) }}
+                </div>
+                <div class="mb-4">
+                    {{ form_label(form.imageFile, 'Image :') }}
+                    {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="mb-4">
+                    {{ form_label(form.Stock.quantite, 'Quantité :') }}
+                    {{ form_widget(form.Stock.quantite, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="mb-4">
+                    {{ form_label(form.Stock.fournisseur_id, 'Fournisseur :') }}
+                    {{ form_widget(form.Stock.fournisseur_id, {'attr': {'class': 'form-control custom-select'}}) }}
+                </div>
+                {# include the rest of the fields here #}
+                <button type="submit" class="btn btn-primary mt-3">Créer</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialisez Select2 sur les champs de formulaire 'produit' existants
+            var existingProduitFields = document.querySelectorAll('.select2');
+            existingProduitFields.forEach(function (field) {
+                $(field).select2();
+            });
+        });
+    </script>
 {% endblock %}

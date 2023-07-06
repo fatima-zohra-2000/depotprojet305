@@ -29,36 +29,39 @@ class ProduitType extends AbstractType
                     'attr' => [
                         'class' => 'form-control',
                     ],
-                    'label' => 'Prix ',
+                    'label' => 'Prix :',
                     'label_attr' => [
-                        'class' => 'form-label mt-4'
+                        'class' => 'form-label mr-5'
                     ],
+                    'currency'=>'',
             ])
             ->add('categorie_id', EntityType::class, [
                 'class' => Categorie::class,
-                'label' => 'Catégorie'
+                'label' => 'Catégorie',
+                'attr' => ['class' => 'select2'], // le plugin Select2 (optionnel)
             ])
             ->add('ordonnance', CheckboxType::class, [
-                'label' => 'Ordonnance',
+//                'label' => 'Ordonnance',
                 'attr' => [
                     'class' => 'form-check-input',
                 ],
                 'label_attr' => [
                     'class' => 'form-check-label'
                 ],
-                'constraints' => [
-                    new Assert\NotNull()
-                ]
+//                'constraints' => [
+//                    new Assert\NotNull()
+//                ]
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Image du produit',
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label'
                 ],
                 'required' => false
             ])
 
-//            ceci fait référence au formulaire Stock pour reprendre les champs qu'y existe. C'est aussi la propriété récupérer dans la vu : form.Stock.quantite
+//            ceci fait appel au formulaire Stock pour reprendre les champs qu'y existe.
+//              C'est aussi la propriété récupéré dans la vu : form.Stock.quantite
             ->add('Stock', StockProduitType::class, [
                 'required' => true,
                 'mapped' => false,

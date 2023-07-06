@@ -58,7 +58,8 @@ class CommandeController extends AbstractController
             $commande->setTotal($total);
             $commande->setMantantTVA($montantTva);
 
-            //on controlle l'ajout du client : si l'utilisateur le choisi parmi la liste on manipule la variable client, s'il choisi de le créer on manipule le formulaire newCliient
+            //on controlle l'ajout du client : si l'utilisateur le choisi parmi la liste on manipule la variable client,
+            // s'il choisi de le créer on utilise le formulaire newCliient
             if ($form->has('newClient')) {
                 $newClient = $form->get('newClient')->getData();
                 if ($newClient) {

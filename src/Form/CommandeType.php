@@ -45,9 +45,9 @@ class CommandeType extends AbstractType
                 'placeholder' => 'Sélectionnez un client',
                 'required' => false,
                 'constraints' => [
-                    new Valid(), // Ajoutez la contrainte Valid pour valider l'entité Client sélectionnée
+                    new Valid(), // la contrainte Valid pour valider l'entité Client sélectionnée
                 ],
-                'attr' => ['class' => 'select2'], // Ajoutez cette ligne pour utiliser le plugin Select2 (optionnel)
+                'attr' => ['class' => 'select2'], // le plugin Select2 (optionnel)
             ])
             ->add('newClient', ClientType::class, [
                 'label' => 'Ajouter un nouveau client',

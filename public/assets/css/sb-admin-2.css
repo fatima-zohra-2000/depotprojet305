@@ -11266,16 +11266,4 @@ form.user .btn-user {
   animation: noise-anim-2 3s infinite linear alternate-reverse;
 }
 
-footer.sticky-footer {
-  padding: 2rem 0;
-  flex-shrink: 0;
-}
 
-footer.sticky-footer .copyright {
-  line-height: 1;
-  font-size: 0.8rem;
-}
-
-body.sidebar-toggled footer.sticky-footer {
-  width: 100%;
-}
